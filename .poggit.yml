@@ -1,0 +1,14 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/ninjaknights/DrawerAPI
+build-by-default: true
+branches:
+- main
+projects:
+  examples.ChatBubble:
+    path: examples/ChatBubble/
+  examples.FloatingText:
+    path: examples/FloatingText/
+  DrawerAPI:
+    path: ""
+    model: virion
+    type: library
+...
