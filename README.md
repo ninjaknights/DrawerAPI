@@ -94,4 +94,4 @@ This project is licensed under the [MIT License](https://github.com/ninjaknights
 
 ## 📬 Contact
 
-Have questions or need help? Join the conversation in the [issues section](https://github.com/ninjaknights/DrawerAPI/issues).
+Have questions or need help? Join out [Discord](https://discord.gg/ZKfh5ycJrU) Server or Join the conversation in the [issues section](https://github.com/ninjaknights/DrawerAPI/issues).
