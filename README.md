@@ -1,16 +1,16 @@
 # DrawerAPI
-[![GitHub license](https://img.shields.io/github/license/HydroGames-dev/DrawerAPI)](https://github.com/HydroGames-dev/DrawerAPI/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/HydroGames-dev/DrawerAPI)](https://github.com/HydroGames-dev/DrawerAPI/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/HydroGames-dev/DrawerAPI)](https://github.com/HydroGames-dev/DrawerAPI/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/HydroGames-dev/DrawerAPI)](https://github.com/HydroGames-dev/DrawerAPI/issues)
-[![Github downloads](https://img.shields.io/github/downloads/HydroGames-dev/DrawerAPI/total)](https://github.com/HydroGames-dev/DrawerAPI/releases)
+[![GitHub license](https://img.shields.io/github/license/ninjaknights/DrawerAPI)](https://github.com/ninjaknights/DrawerAPI/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/ninjaknights/DrawerAPI)](https://github.com/ninjaknights/DrawerAPI/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ninjaknights/DrawerAPI)](https://github.com/ninjaknights/DrawerAPI/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/ninjaknights/DrawerAPI)](https://github.com/ninjaknights/DrawerAPI/issues)
+[![Github downloads](https://img.shields.io/github/downloads/ninjaknights/DrawerAPI/total)](https://github.com/ninjaknights/DrawerAPI/releases)
 
 <p align="center">
-	<a href="https://github.com/HydroGames-dev/DrawerAPI">
+	<a href="https://github.com/ninjaknights/DrawerAPI">
     <img src="assets/icon.png?raw=true" alt="DrawerAPI Icon" width="150" /></a><br>
 	<b>DrawerAPI</b> is a PocketMine-MP virion designed to draw shapes and text in the world using the ServerScriptDebugDrawerPacket.
 	<br>
-	<a href="https://github.com/HydroGames-dev/DrawerAPI">View on GitHub</a>
+	<a href="https://github.com/ninjaknights/DrawerAPI">View on GitHub</a>
 </p>
 
 **NOTE:** You MUST register `DrawerAPI` during plugin enable before you can begin creating `DrawerAPI` instances.
@@ -88,10 +88,10 @@ foreach ($activeIds as $id) {
 
 ## 📄 License
 
-This project is licensed under the [MIT License](https://github.com/HydroGames-dev/DrawerAPI/blob/main/LICENSE).
+This project is licensed under the [MIT License](https://github.com/ninjaknights/DrawerAPI/blob/main/LICENSE).
 
 ---
 
 ## 📬 Contact
 
-Have questions or need help? Join the conversation in the [issues section](https://github.com/HydroGames-dev/DrawerAPI/issues).
+Have questions or need help? Join the conversation in the [issues section](https://github.com/ninjaknights/DrawerAPI/issues).
