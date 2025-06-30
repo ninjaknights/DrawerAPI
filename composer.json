@@ -1,0 +1,26 @@
+{
+  "name": "ninjaknights/drawerapi",
+  "description": "PocketMine-MP virion designed to draw shapes and text in the world using the ServerScriptDebugDrawerPacket.",
+  "type": "library",
+  "license": "MIT",
+  "require-dev": {
+    "pocketmine/pocketmine-mp": "^5.0.0"
+  },
+  "autoload": {
+    "classmap": ["src"]
+  },
+  "extra": {
+    "virion": {
+      "spec": "3.1",
+      "namespace-root": "NinjaKnights\\DrawerAPI"
+    }
+  },
+  "authors": [
+    {
+      "name": "HydroGamesDev",
+      "homepage": "https://github.com/HydroGamesDev",
+      "role": "Developer",
+      "email": "hydrogamesnetwork@gmail.com"
+    }
+  ]
+}

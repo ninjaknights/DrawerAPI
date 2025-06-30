@@ -1,0 +1,9 @@
+name: FloatingText
+author: HydroGames
+version: 0.0.1
+api: 5.0.0
+main: Britty\Main
+permissions:
+  ft.command.admin:
+    default: op
+    description: Allows access to spawn Floating Text.
