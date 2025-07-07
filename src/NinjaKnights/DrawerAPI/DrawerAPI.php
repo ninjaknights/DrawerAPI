@@ -8,21 +8,11 @@ use pocketmine\color\Color;
 use pocketmine\player\Player;
 use pocketmine\world\World;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\SingletonTrait;
 use pocketmine\network\mcpe\NetworkBroadcastUtils;
 use pocketmine\network\mcpe\protocol\ServerScriptDebugDrawerPacket;
 use pocketmine\network\mcpe\protocol\types\PacketShapeData;
 
-/**
- * DrawerAPI is a singleton class that provides an API for creating and managing debug shapes in Minecraft Bedrock Edition.
- * It allows plugins to register themselves and create various shapes like arrows, boxes, lines, etc.
- * The shapes can be displayed to players or in specific worlds.
- */
 class DrawerAPI {
-	use SingletonTrait {
-		setInstance as private;
-		reset as private;
-	}
 
 	/** @var bool */
 	protected static bool $registered = false;
@@ -32,14 +22,6 @@ class DrawerAPI {
 	private static array $idsCount = [];
 	/** @var array<string, array<int, bool>> */
 	private static array $activeIds = [];
-
-	/**
-	 * Private constructor to enforce singleton pattern.
-	 * Use DrawerAPI::getInstance() to access the instance.
-	 */
-	private function __construct(){
-		self::setInstance($this);
-	}
 
 	/**
 	 * Checks if the DrawerAPI is registered.
@@ -67,16 +49,16 @@ class DrawerAPI {
 	 * @throws \RuntimeException if DrawerAPI is already registered.
 	 */
 	public static function register(PluginBase $plugin): void {
-        if(self::$registered){
+		if(self::$registered){
 			throw new \RuntimeException("DrawerAPI is already registered");
-        }
-        foreach(["arrow", "text", "circle", "sphere", "box", "line"] as $type){
-            self::$idsCount[$type] = 0;
+		}
+		foreach(["arrow", "text", "circle", "sphere", "box", "line"] as $type){
+			self::$idsCount[$type] = 0;
 			self::$activeIds[$type] = [];
-        }
+		}
 		self::$plugin = $plugin;
-        self::$registered = true;
-    }
+		self::$registered = true;
+	}
 
 	/**
 	 * Gets the Color object for a given color name.

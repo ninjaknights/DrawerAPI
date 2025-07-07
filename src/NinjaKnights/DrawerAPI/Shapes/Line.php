@@ -25,8 +25,8 @@ class Line {
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
 	*/
-    public static function create(
-        World|Player $viewer,
+	public static function create(
+		World|Player $viewer,
 		Vector3|null $position = null,
 		Vector3|null $endLinePosition = null,
 		float|null $size = null,
@@ -35,7 +35,7 @@ class Line {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Line::create before calling register");
 		}
-		$id = DrawerAPI::getInstance()->generateId("line");
+		$id = DrawerAPI::generateId("line");
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
@@ -54,14 +54,13 @@ class Line {
 			)])
 		);
 		return $id;
-    }
+	}
 
 	/**
 	 * Removes a specific line shape by its ID.
 	 *
 	 * @param World|Player $viewer The world or player from which to remove the line shape.
 	 * @param int $id The ID of the line shape to remove.
-	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
 	public static function removeById(World|Player $viewer, int $id): void {

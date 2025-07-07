@@ -25,8 +25,8 @@ class Sphere {
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
-    public static function create(
-        World|Player $viewer,
+	public static function create(
+		World|Player $viewer,
 		Vector3|null $position = null,
 		float|null $size = null,
 		string|null $color = null,
@@ -35,7 +35,7 @@ class Sphere {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Sphere::create before calling register");
 		}
-		$id = DrawerAPI::getInstance()->generateId("sphere");
+		$id = DrawerAPI::generateId("sphere");
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,

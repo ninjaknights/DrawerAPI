@@ -24,8 +24,8 @@ class Box {
 	 * @param string|null $color The color of the box. Defaults to "white".
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
-    public static function create(
-        World|Player $viewer,
+	public static function create(
+		World|Player $viewer,
 		Vector3|null $position = null,
 		Vector3|null $boxBound = null,
 		float|null $size = null,
@@ -34,7 +34,7 @@ class Box {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Box::create before calling register");
 		}
-		$id = DrawerAPI::getInstance()->generateId("box");
+		$id = DrawerAPI::generateId("box");
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,

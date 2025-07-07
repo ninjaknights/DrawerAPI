@@ -28,8 +28,8 @@ class Arrow {
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
-    public static function create(
-        World|Player $viewer,
+	public static function create(
+		World|Player $viewer,
 		Vector3|null $position = null,
 		Vector3|null $endLinePosition = null,
 		float|null $size = null,
@@ -41,7 +41,7 @@ class Arrow {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Arrow::create before calling register");
 		}
-		$id = DrawerAPI::getInstance()->generateId("arrow");
+		$id = DrawerAPI::generateId("arrow");
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,

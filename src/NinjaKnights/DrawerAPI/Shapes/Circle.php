@@ -25,8 +25,8 @@ class Circle {
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
-    public static function create(
-        World|Player $viewer,
+	public static function create(
+		World|Player $viewer,
 		Vector3|null $position = null,
 		float|null $size = null,
 		string|null $color = null,
@@ -35,7 +35,7 @@ class Circle {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Circle::create before calling register");
 		}
-		$id = DrawerAPI::getInstance()->generateId("circle");
+		$id = DrawerAPI::generateId("circle");
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
@@ -61,7 +61,6 @@ class Circle {
 	 *
 	 * @param World|Player $viewer The world or player from which to remove the circle shape.
 	 * @param int $id The ID of the circle shape to remove.
-	 *
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
 	public static function removeById(World|Player $viewer, int $id): void {
