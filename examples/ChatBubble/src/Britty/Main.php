@@ -15,26 +15,26 @@ use pocketmine\event\block\BlockBreakEvent;
 
 class Main extends PluginBase implements Listener{
 
-    public static $instance;
+	public static $instance;
 
-    public function onLoad(): void{
-        self::$instance = $this; 
-    }
+	public function onLoad(): void{
+		self::$instance = $this; 
+	}
 
-    public static function getInstance(): self{
-        return self::$instance;
-    }
+	public static function getInstance(): self{
+		return self::$instance;
+	}
 
-    public function onEnable(): void{
-        if(!DrawerAPI::isRegistered()){
+	public function onEnable(): void{
+		if(!DrawerAPI::isRegistered()){
 			DrawerAPI::register($this);
 		}
-        $this->getServer()->getLogger()->info("§7-----------------------");
-        $this->getServer()->getLogger()->info("§eLoading ChatBubbles Plugin...");
-        $this->getServer()->getLogger()->info("§7-----------------------");
+		$this->getServer()->getLogger()->info("§7-----------------------");
+		$this->getServer()->getLogger()->info("§eLoading ChatBubbles Plugin...");
+		$this->getServer()->getLogger()->info("§7-----------------------");
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 		$this->getServer()->getLogger()->info("§aChatBubbles Plugin Enabled!");
-    }
+	}
 
 	public function onPlayerBlockBreak(BlockBreakEvent $event){
 		$player = $event->getPlayer();

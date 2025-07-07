@@ -1,23 +1,23 @@
 <?php
 
 function getVersion(): string {
-    $composer = json_decode(file_get_contents(__DIR__ . '/composer.json'), true);
-    return $composer['version'] ?? 'dev';
+	$composer = json_decode(file_get_contents(__DIR__ . '/composer.json'), true);
+	return $composer['version'] ?? 'dev';
 }
 
 function getName(): string {
-    $composer = json_decode(file_get_contents(__DIR__ . '/composer.json'), true);
-    return isset($composer['name']) ? basename($composer['name']) : 'DrawerAPI';
+	$composer = json_decode(file_get_contents(__DIR__ . '/composer.json'), true);
+	return isset($composer['name']) ? basename($composer['name']) : 'DrawerAPI';
 }
 
 $version = getVersion();
 $name = getName();
 $pharFile = "build/{$name}-{$version}.phar";
 if (!is_dir("build")) {
-    mkdir("build");
+	mkdir("build");
 }
 if (file_exists($pharFile)) {
-    unlink($pharFile);
+	unlink($pharFile);
 }
 echo "Building Phar: $pharFile\n";
 $phar = new Phar($pharFile);

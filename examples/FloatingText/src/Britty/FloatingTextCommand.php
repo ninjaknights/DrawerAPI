@@ -9,27 +9,27 @@ use pocketmine\player\Player;
 
 class FloatingTextCommand extends Command {
 
-    private $plugin;
+	private $plugin;
 
-    public function __construct(Main $plugin) {
-        parent::__construct("floatingtext", "manage floating text settings", "/floatingtext", ["ft"]);
-        $this->setPermission("ft.command.admin");
-        $this->plugin = $plugin;
-    }
-    
-    public function getPlugin(): Main{
-        return $this->plugin;
-    }
-    
-    public function getServer(){
-        return $this->plugin->getServer();
-    }
+	public function __construct(Main $plugin) {
+		parent::__construct("floatingtext", "manage floating text settings", "/floatingtext", ["ft"]);
+		$this->setPermission("ft.command.admin");
+		$this->plugin = $plugin;
+	}
+	
+	public function getPlugin(): Main{
+		return $this->plugin;
+	}
+	
+	public function getServer(){
+		return $this->plugin->getServer();
+	}
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args): bool{
-        if (!$sender instanceof Player) {
-            $sender->sendMessage(Main::PREFIX."This command can only be used in-game.");
-            return true;
-        }
+	public function execute(CommandSender $sender, string $commandLabel, array $args): bool{
+		if (!$sender instanceof Player) {
+			$sender->sendMessage(Main::PREFIX."This command can only be used in-game.");
+			return true;
+		}
 		$textManager = $this->plugin->getTextManager();
 		switch($args[0] ?? '') {
 			case "create":
@@ -127,6 +127,6 @@ class FloatingTextCommand extends Command {
 			default:
 				$sender->sendMessage(Main::PREFIX . "Usage: /floatingtext <create|remove|edit>");
 		}
-        return true;
-    }
+		return true;
+	}
 }
