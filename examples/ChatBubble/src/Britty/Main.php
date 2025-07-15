@@ -9,8 +9,8 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\world\World;
 use pocketmine\utils\TextFormat as TF;
-use NinjaKnights\DrawerAPI\DrawerAPI;
-use NinjaKnights\DrawerAPI\Shapes\Text;
+use ninjaknights\drawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\Shapes\Text;
 use pocketmine\event\block\BlockBreakEvent;
 
 class Main extends PluginBase implements Listener{

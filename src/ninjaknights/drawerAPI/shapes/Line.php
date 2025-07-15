@@ -21,7 +21,7 @@ class Line {
 	 * @param Vector3|null $position The position where the line will start. Defaults to the viewer's position.
 	 * @param Vector3|null $endLinePosition The position where the line will end. Defaults to null.
 	 * @param float|null $size The size of the line. Defaults to 1.0.
-	 * @param string|null $color The color of the line. Defaults to "white".
+	 * @param string|null $color The color of the line. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
 	*/
@@ -35,12 +35,13 @@ class Line {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Line::create before calling register");
 		}
+		$pos = ($position === null) ? ($viewer instanceof Player ? $viewer->getPosition() : null) : $position;
 		$id = DrawerAPI::generateId("line");
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
 				type: ScriptDebugShapeType::LINE,
-				location: $position ?? $viewer->getPosition(),
+				location: $pos,
 				scale: $size ?? 1.0,
 				rotation: null,
 				totalTimeLeft: null,

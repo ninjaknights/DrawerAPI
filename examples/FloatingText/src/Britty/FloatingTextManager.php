@@ -6,8 +6,8 @@ use pocketmine\utils\Config;
 use pocketmine\math\Vector3;
 use pocketmine\world\World;
 use pocketmine\player\Player;
-use NinjaKnights\DrawerAPI\DrawerAPI;
-use NinjaKnights\DrawerAPI\Shapes\Text;
+use ninjaknights\drawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\Shapes\Text;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 

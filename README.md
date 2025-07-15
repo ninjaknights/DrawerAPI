@@ -15,7 +15,7 @@
 
 **NOTE:** You MUST register `DrawerAPI` during plugin enable before you can begin creating `DrawerAPI` instances.
 ```php
-use NinjaKnights\DrawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\DrawerAPI;
 class MyPlugin extends PluginBase {
     protected function onLoad(): void {
 		if(!DrawerAPI::isRegistered()){
@@ -27,15 +27,28 @@ class MyPlugin extends PluginBase {
 
 #### Creating Shapes
 You can create various shapes using the `DrawerAPI` methods. Here are some examples:
+- TextShape:
 ```php
-use NinjaKnights\DrawerAPI\shape\Text;
+use ninjaknights\drawerAPI\shape\Text;
 // Create a text shape
 Text::create(
 	$world, // Player/World Players to show the text to
 	"Hello, World!", // The text to display
-	$player->getPosition(), // Position in the world
+	new Vector3(0, 100, 0), // Position in the world or set to null to use player's position
 	1.0, // Scale of the text
-	"white", // Color of the text
+	"white", // Color name or #f0f0f0, f0f0f0 works too
+);
+```
+- CircleShape:
+```php
+use ninjaknights\drawerAPI\shape\Circle;
+// Create a text shape
+Circle::create(
+	$world, // Player/World Players to show the text to
+	new Vector3(0, 100, 0), // Position in the world or set to null to use player's position
+	1.0, // Scale of the text
+	"#ff0000ff", // Color name or #f0f0f0, f0f0f0 works too
+	3 // 3 means it will have 3 sides so a triangle, default is >50 (not sure)
 );
 ```
 
@@ -50,20 +63,20 @@ Text::create(
 #### Clearing Shapes
 You can clear all shapes of a specific type for a viewer or world using the `clearAll` method:
 ```php
-use NinjaKnights\DrawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\DrawerAPI;
 DrawerAPI::clearAll("text", $world); // Clears all text shapes for the specified world
 DrawerAPI::clearAll("arrow", $player); // Clears all arrow shapes for the specified player
 ```
 or clear all shapes of a specific type for all viewers:
 ```php
-use NinjaKnights\DrawerAPI\shape\Text;
+use ninjaknights\drawerAPI\shape\Text;
 Text::removeById($world, 1); // Removes the text shape with ID 1 for the player/world players
 ```
 
 #### Getting Active IDs
 You can get the list of active IDs for a specific type of shape using the `getIdList` method:
 ```php
-use NinjaKnights\DrawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\DrawerAPI;
 $activeIds = DrawerAPI::getIdList("text");
 if (empty($activeIds)) {
 	throw new \RuntimeException("No active IDs found for the specified type.");
@@ -79,7 +92,7 @@ foreach ($activeIds as $id) {
 |--------|-------------|
 | `register(PluginBase $plugin)` | Registers DrawerAPI with your plugin. |
 | `isRegistered()` | Checks if the API is already registered. |
-| `sendPacket(World\|Player $viewer, ?ServerScriptDebugDrawerPacket $packet)` | Sends a custom packet to a viewer or world. |
+| `sendPacket(World\|Player $viewer, ServerScriptDebugDrawerPacket $packet)` | Sends a custom packet to a viewer or world. |
 | `despawnPacketByID(World\|Player $viewer, int $id)` | Removes a specific shape by ID. |
 | `getIdList(string $type)` | Gets all active IDs for a shape type. |
 | `clearAll(World\|Player $viewer, string $type)` | Clears all shapes of a type for the viewer or world. |
@@ -88,7 +101,7 @@ foreach ($activeIds as $id) {
 
 ## 📄 License
 
-This project is licensed under the [MIT License](https://github.com/ninjaknights/DrawerAPI/blob/main/LICENSE).
+This project is licensed under the [GPL-3.0 License](https://github.com/ninjaknights/DrawerAPI/blob/main/LICENSE).
 
 ---
 

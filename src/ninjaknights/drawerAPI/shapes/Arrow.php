@@ -23,7 +23,7 @@ class Arrow {
 	 * @param float|null $size The size of the arrow. Defaults to 1.0.
 	 * @param float|null $arrowHeadLength The length of the arrow head. Defaults to 0.5.
 	 * @param float|null $arrowHeadRadius The radius of the arrow head. Defaults to 0.1.
-	 * @param string|null $color The color of the arrow. Defaults to "white".
+	 * @param string|null $color The color of the arrow. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
 	 * @param int|null $segments The number of segments for the arrow. Defaults to 4.
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
@@ -41,12 +41,13 @@ class Arrow {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Arrow::create before calling register");
 		}
+		$pos = ($position === null) ? ($viewer instanceof Player ? $viewer->getPosition() : null) : $position;
 		$id = DrawerAPI::generateId("arrow");
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
 				type: ScriptDebugShapeType::ARROW,
-				location: $position ?? $viewer->getPosition(),
+				location: $pos,
 				scale: $size ?? 1.0,
 				rotation: null,
 				totalTimeLeft: null,

@@ -20,7 +20,7 @@ class Sphere {
 	 * @param World|Player $viewer The world or player where the sphere will be displayed.
 	 * @param Vector3|null $position The position where the sphere will be displayed. Defaults to the viewer's position.
 	 * @param float|null $size The size of the sphere. Defaults to 1.0.
-	 * @param string|null $color The color of the sphere. Defaults to "white".
+	 * @param string|null $color The color of the sphere. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
 	 * @param int|null $segments The number of segments for the sphere. Defaults to 50.
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
@@ -35,12 +35,13 @@ class Sphere {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Sphere::create before calling register");
 		}
+		$pos = ($position === null) ? ($viewer instanceof Player ? $viewer->getPosition() : null) : $position;
 		$id = DrawerAPI::generateId("sphere");
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
 				type: ScriptDebugShapeType::SPHERE,
-				location: $position ?? $viewer->getPosition(),
+				location: $pos,
 				scale: $size ?? 1.0,
 				rotation: null,
 				totalTimeLeft: null,

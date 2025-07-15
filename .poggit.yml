@@ -3,10 +3,6 @@ build-by-default: true
 branches:
 - main
 projects:
-  examples.ChatBubble:
-    path: examples/ChatBubble/
-  examples.FloatingText:
-    path: examples/FloatingText/
   DrawerAPI:
     path: ""
     model: virion

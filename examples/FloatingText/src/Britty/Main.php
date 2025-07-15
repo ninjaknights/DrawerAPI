@@ -8,8 +8,8 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use Britty\FloatingTextCommand;
 use Britty\FloatingTextManager;
-use NinjaKnights\DrawerAPI\DrawerAPI;
-use NinjaKnights\DrawerAPI\Shapes\Text;
+use ninjaknights\drawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\Shapes\Text;
 
 class Main extends PluginBase implements Listener{
 
