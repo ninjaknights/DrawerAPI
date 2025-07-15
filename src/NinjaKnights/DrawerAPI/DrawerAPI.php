@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NinjaKnights\DrawerAPI;
+namespace ninjaknights\drawerAPI;
 
 use pocketmine\color\Color;
 use pocketmine\player\Player;

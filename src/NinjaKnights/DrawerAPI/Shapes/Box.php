@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace NinjaKnights\DrawerAPI\Shapes;
+namespace ninjaknights\drawerAPI\shapes;
 
-use NinjaKnights\DrawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\DrawerAPI;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\world\World;

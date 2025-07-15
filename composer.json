@@ -4,24 +4,6 @@
   "type": "library",
   "version": "0.0.2",
   "license": "MIT",
-  "require-dev": {
-    "pocketmine/pocketmine-mp": "^5.0.0"
-  },
-  "autoload": {
-    "classmap": ["src"],
-    "psr-4": {
-      "DrawerAPI\\": "src/"
-    }
-  },
-  "scripts": {
-    "compile": "php build-phar.php"
-  },
-  "extra": {
-    "virion": {
-      "spec": "3.1",
-      "namespace-root": "NinjaKnights\\DrawerAPI"
-    }
-  },
   "authors": [
     {
       "name": "HydroGamesDev",
@@ -29,5 +11,22 @@
       "role": "Developer",
       "email": "hydrogamesnetwork@gmail.com"
     }
-  ]
+  ],
+  "scripts": {
+		"analyze": "vendor/bin/phpstan analyze src --level=8",
+		"build": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=DrawerAPI.phar"
+	},
+  "require-dev": {
+		"pocketmine/pocketmine-mp": "^5.0.0",
+		"sof3/pharynx": "^0.3.0"
+  },
+  "autoload": {
+    "classmap": ["src"]
+  },
+  "extra": {
+    "virion": {
+      "spec": "3.1",
+      "namespace-root": "ninjaknights\\drawerAPI"
+    }
+  }
 }
