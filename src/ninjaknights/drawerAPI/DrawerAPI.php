@@ -46,11 +46,11 @@ class DrawerAPI {
 	 * Registers the DrawerAPI with the given plugin.
 	 * This method should be called once during plugin initialization.
 	 * @param PluginBase $plugin The plugin instance to register with.
-	 * @throws \Throwable if DrawerAPI is already registered.
+	 * @throws \LogicException if DrawerAPI is already registered.
 	 */
 	public static function register(PluginBase $plugin): void {
 		if(self::$registered){
-			throw new \Throwable("DrawerAPI is already registered");
+			throw new \LogicException("DrawerAPI is already registered");
 		}
 		foreach(ShapeType::cases() as $type){
 			self::$idsCount[$type->value] = 0;
@@ -150,13 +150,13 @@ class DrawerAPI {
 	 * @param ShapeType|null $type The type of shape for which to generate an ID.
 	 * @return int The generated ID.
 	 * @throws \InvalidArgumentException  if the ShapeType is not mentioned via ShapeType Enum.
-	 * @throws \Throwable if the ID overflow occurs for the specified type.
+	 * @throws \RuntimeException if the ID overflow occurs for the specified type.
 	 */
 	public static function generateId(ShapeType|null $type = null): int {
 		self::checkRegistered();
 		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
 		if(isset(self::$activeIds[$type->value][PHP_INT_MAX])){
-			throw new \Throwable("ID overflow for type: $type->value");
+			throw new \RuntimeException("ID overflow for type: $type->value");
 		}
 		$id = ++self::$idsCount[$type->value];
 		self::$activeIds[$type->value][$id] = true;
@@ -170,22 +170,22 @@ class DrawerAPI {
 	 * @param ShapeType|null $type The type of shape for which to remove the ID.
 	 * @param int $id The ID to remove.
 	 * @throws \InvalidArgumentException  if the ShapeType is not mentioned via ShapeType Enum.
-	 * @throws \Throwable if the ID does not exist for the specified type or if the ID count goes negative.
+	 * @throws \RuntimeException if the ID does not exist for the specified type or if the ID count goes negative.
 	 */
 	public static function removeId(ShapeType|null $type = null, int $id): void {
 		self::checkRegistered();
 		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
 		if(!isset(self::$activeIds[$type->value][$id])){
-			throw new \Throwable("Cannot remove non-existent ID {$id} for type {$type->value}");
+			throw new \RuntimeException("Cannot remove non-existent ID {$id} for type {$type->value}");
 		}
 		unset(self::$activeIds[$type->value][$id]);
 		if(self::$idsCount[$type->value] === $id){
 			self::$idsCount[$type->value]--;
 		}
 		if(self::$idsCount[$type->value] < 0){
-			throw new \Throwable("ID count for type {$type} went negative");
+			throw new \RuntimeException("ID count for type {$type->value} went negative");
 		}
-		self::$plugin?->getLogger()->debug("Removed ID {$id} for type {$type}");
+		self::$plugin?->getLogger()->debug("Removed ID {$id} for type {$type->value}");
 	}
 
 	/**
@@ -194,13 +194,13 @@ class DrawerAPI {
 	 * @param ShapeType|null $type The type of shape for which to get the active IDs.
 	 * @return array<int> An array of active IDs for the specified type.
 	 * @throws \InvalidArgumentException  if the ShapeType is not mentioned via ShapeType Enum.
-	 * @throws \Throwable if there are no active IDs for the specified type.
+	 * @throws \RuntimeException if there are no active IDs for the specified type.
 	 */
 	public static function getIdList(ShapeType|null $type = null): array {
 		self::checkRegistered();
 		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
 		if(!isset(self::$activeIds[$type->value])){
-			throw new \Throwable("No active IDs for type {$type->value}");
+			throw new \RuntimeException("No active IDs for type {$type->value}");
 		}
 		return array_keys(self::$activeIds[$type->value]);
 	}
