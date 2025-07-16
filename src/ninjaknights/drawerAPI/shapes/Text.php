@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ninjaknights\drawerAPI\shapes;
 
 use ninjaknights\drawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\ShapeType;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\world\World;
@@ -38,7 +39,7 @@ class Text {
 		$pos = ($position === null) ? ($viewer instanceof Player ? $viewer->getPosition() : null) : $position;
 		// https://learn.microsoft.com/en-us/minecraft/creator/scriptapi/minecraft/debug-utilities/debugshape?view=minecraft-bedrock-experimental#totaltimeleft
 		// apparently totalTimeLeft is a real only method
-		$id = DrawerAPI::generateId("text");
+		$id = DrawerAPI::generateId(ShapeType::TEXT);
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
@@ -71,6 +72,6 @@ class Text {
 			throw new \LogicException("Cannot call Text::removeById before DrawerAPI is registered");
 		}
 		DrawerAPI::despawnPacketByID($viewer, $id);
-		DrawerAPI::removeId("text", $id);
+		DrawerAPI::removeId(ShapeType::TEXT, $id);
 	}
 }

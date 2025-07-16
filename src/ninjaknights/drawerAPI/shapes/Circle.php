@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ninjaknights\drawerAPI\shapes;
 
 use ninjaknights\drawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\ShapeType;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\world\World;
@@ -36,7 +37,7 @@ class Circle {
 			throw new \LogicException("Cannot call Circle::create before calling register");
 		}
 		$pos = ($position === null) ? ($viewer instanceof Player ? $viewer->getPosition() : null) : $position;
-		$id = DrawerAPI::generateId("circle");
+		$id = DrawerAPI::generateId(ShapeType::CIRCLE);
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
@@ -69,6 +70,6 @@ class Circle {
 			throw new \LogicException("Cannot call Circle::removeById before DrawerAPI is registered");
 		}
 		DrawerAPI::despawnPacketByID($viewer, $id);
-		DrawerAPI::removeId("circle", $id);
+		DrawerAPI::removeId(ShapeType::CIRCLE, $id);
 	}
 }

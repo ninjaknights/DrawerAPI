@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ninjaknights\drawerAPI\shapes;
 
 use ninjaknights\drawerAPI\DrawerAPI;
+use ninjaknights\drawerAPI\ShapeType;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\world\World;
@@ -36,7 +37,7 @@ class Line {
 			throw new \LogicException("Cannot call Line::create before calling register");
 		}
 		$pos = ($position === null) ? ($viewer instanceof Player ? $viewer->getPosition() : null) : $position;
-		$id = DrawerAPI::generateId("line");
+		$id = DrawerAPI::generateId(ShapeType::LINE);
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
@@ -69,6 +70,6 @@ class Line {
 			throw new \LogicException("Cannot call Line::removeById before DrawerAPI is registered");
 		}
 		DrawerAPI::despawnPacketByID($viewer, $id);
-		DrawerAPI::removeId("line", $id);
+		DrawerAPI::removeId(ShapeType::LINE, $id);
 	}
 }

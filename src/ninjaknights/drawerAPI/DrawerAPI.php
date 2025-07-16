@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ninjaknights\drawerAPI;
 
+use ninjaknights\drawerAPI\ShapeType;
 use pocketmine\color\Color;
 use pocketmine\player\Player;
 use pocketmine\world\World;
@@ -45,15 +46,15 @@ class DrawerAPI {
 	 * Registers the DrawerAPI with the given plugin.
 	 * This method should be called once during plugin initialization.
 	 * @param PluginBase $plugin The plugin instance to register with.
-	 * @throws \RuntimeException if DrawerAPI is already registered.
+	 * @throws \Throwable if DrawerAPI is already registered.
 	 */
 	public static function register(PluginBase $plugin): void {
 		if(self::$registered){
-			throw new \RuntimeException("DrawerAPI is already registered");
+			throw new \Throwable("DrawerAPI is already registered");
 		}
-		foreach(["arrow", "text", "circle", "sphere", "box", "line"] as $type){
-			self::$idsCount[$type] = 0;
-			self::$activeIds[$type] = [];
+		foreach(ShapeType::cases() as $type){
+			self::$idsCount[$type->value] = 0;
+			self::$activeIds[$type->value] = [];
 		}
 		self::$plugin = $plugin;
 		self::$registered = true;
@@ -98,6 +99,7 @@ class DrawerAPI {
 	 * @return Color|null
 	 */
 	private static function fromHex(string $hex): ?Color{
+		self::checkRegistered();
 		$hex = ltrim($hex, "#");
 		if(!preg_match('/^[0-9a-f]{6}$/i', $hex)){
 			return null;
@@ -145,39 +147,43 @@ class DrawerAPI {
 	/**
 	 * Generates a new ID for a specific type of shape.
 	 * The ID is incremented from the last used ID for that type.
-	 * @param string $type The type of shape for which to generate an ID.
+	 * @param ShapeType|null $type The type of shape for which to generate an ID.
 	 * @return int The generated ID.
-	 * @throws \RuntimeException if the ID overflow occurs for the specified type.
+	 * @throws \InvalidArgumentException  if the ShapeType is not mentioned via ShapeType Enum.
+	 * @throws \Throwable if the ID overflow occurs for the specified type.
 	 */
-	public static function generateId(string $type): int {
+	public static function generateId(ShapeType|null $type = null): int {
 		self::checkRegistered();
-		if(isset(self::$activeIds[$type][PHP_INT_MAX])){
-			throw new \RuntimeException("ID overflow for type: $type");
+		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
+		if(isset(self::$activeIds[$type->value][PHP_INT_MAX])){
+			throw new \Throwable("ID overflow for type: $type->value");
 		}
-		$id = ++self::$idsCount[$type];
-		self::$activeIds[$type][$id] = true;
-		self::$plugin?->getLogger()->debug("Generated ID {$id} for type {$type}");
+		$id = ++self::$idsCount[$type->value];
+		self::$activeIds[$type->value][$id] = true;
+		self::$plugin?->getLogger()->debug("Generated ID {$id} for type {$type->value}");
 		return $id;
 	}
 
 	/**
 	 * Removes an ID for a specific type of shape.
 	 * This method should be called when the shape is no longer needed.
-	 * @param string $type The type of shape for which to remove the ID.
+	 * @param ShapeType|null $type The type of shape for which to remove the ID.
 	 * @param int $id The ID to remove.
-	 * @throws \RuntimeException if the ID does not exist for the specified type or if the ID count goes negative.
+	 * @throws \InvalidArgumentException  if the ShapeType is not mentioned via ShapeType Enum.
+	 * @throws \Throwable if the ID does not exist for the specified type or if the ID count goes negative.
 	 */
-	public static function removeId(string $type, int $id): void {
+	public static function removeId(ShapeType|null $type = null, int $id): void {
 		self::checkRegistered();
-		if(!isset(self::$activeIds[$type][$id])){
-			throw new \RuntimeException("Cannot remove non-existent ID {$id} for type {$type}");
+		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
+		if(!isset(self::$activeIds[$type->value][$id])){
+			throw new \Throwable("Cannot remove non-existent ID {$id} for type {$type->value}");
 		}
-		unset(self::$activeIds[$type][$id]);
-		if(self::$idsCount[$type] === $id){
-			self::$idsCount[$type]--;
+		unset(self::$activeIds[$type->value][$id]);
+		if(self::$idsCount[$type->value] === $id){
+			self::$idsCount[$type->value]--;
 		}
-		if(self::$idsCount[$type] < 0){
-			throw new \RuntimeException("ID count for type {$type} went negative");
+		if(self::$idsCount[$type->value] < 0){
+			throw new \Throwable("ID count for type {$type} went negative");
 		}
 		self::$plugin?->getLogger()->debug("Removed ID {$id} for type {$type}");
 	}
@@ -185,29 +191,40 @@ class DrawerAPI {
 	/**
 	 * Gets the list of active IDs for a specific type of shape.
 	 * This method returns an array of IDs that are currently active for the specified type.
-	 * @param string $type The type of shape for which to get the active IDs.
+	 * @param ShapeType|null $type The type of shape for which to get the active IDs.
 	 * @return array<int> An array of active IDs for the specified type.
-	 * @throws \RuntimeException if there are no active IDs for the specified type.
+	 * @throws \InvalidArgumentException  if the ShapeType is not mentioned via ShapeType Enum.
+	 * @throws \Throwable if there are no active IDs for the specified type.
 	 */
-	public static function getIdList(string $type): array {
+	public static function getIdList(ShapeType|null $type = null): array {
 		self::checkRegistered();
-		if(!isset(self::$activeIds[$type])){
-			throw new \RuntimeException("No active IDs for type {$type}");
+		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
+		if(!isset(self::$activeIds[$type->value])){
+			throw new \Throwable("No active IDs for type {$type->value}");
 		}
-		return array_keys(self::$activeIds[$type]);
+		return array_keys(self::$activeIds[$type->value]);
 	}
 
 	/**
 	 * Clears all active shapes of a specific type for a viewer or world.
 	 * This method despawns all shapes of the specified type and removes their IDs.
 	 * @param World|Player $viewer The viewer or world from which to clear the shapes.
-	 * @param string $type The type of shapes to clear.
+	 * @param ShapeType|null $type The type of shapes to clear, by default `null` means all shapes.
 	 */
-	public static function clearAll(World|Player $viewer, string $type): void {
+	public static function clearAll(World|Player $viewer, ShapeType|null $type = null): void {
 		self::checkRegistered();
-		foreach(self::$activeIds[$type] ?? [] as $id => $_){
-			self::despawnPacketByID($viewer, $id);
-			self::removeId($type, $id);
+		if($type !== null){
+			foreach(self::$activeIds[$type->value] ?? [] as $id => $_){
+				self::despawnPacketByID($viewer, $id);
+				self::removeId($type, $id);
+			}
+		}else{
+			foreach(ShapeType::cases() as $shapeType){
+				foreach (self::$activeIds[$shapeType->value] ?? [] as $id => $_) {
+					self::despawnPacketByID($viewer, $id);
+					self::removeId($shapeType, $id);
+				}
+			}
 		}
 	}
 }

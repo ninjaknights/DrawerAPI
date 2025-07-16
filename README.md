@@ -64,8 +64,8 @@ Circle::create(
 You can clear all shapes of a specific type for a viewer or world using the `clearAll` method:
 ```php
 use ninjaknights\drawerAPI\DrawerAPI;
-DrawerAPI::clearAll("text", $world); // Clears all text shapes for the specified world
-DrawerAPI::clearAll("arrow", $player); // Clears all arrow shapes for the specified player
+DrawerAPI::clearAll(ShapeType::TEXT, $world); // Clears all text shapes for the specified world
+DrawerAPI::clearAll(ShapeType::ARROW, $player); // Clears all arrow shapes for the specified player
 ```
 or clear all shapes of a specific type for all viewers:
 ```php
@@ -77,7 +77,7 @@ Text::removeById($world, 1); // Removes the text shape with ID 1 for the player/
 You can get the list of active IDs for a specific type of shape using the `getIdList` method:
 ```php
 use ninjaknights\drawerAPI\DrawerAPI;
-$activeIds = DrawerAPI::getIdList("text");
+$activeIds = DrawerAPI::getIdList(ShapeType::TEXT);
 if (empty($activeIds)) {
 	throw new \RuntimeException("No active IDs found for the specified type.");
 }
@@ -94,8 +94,8 @@ foreach ($activeIds as $id) {
 | `isRegistered()` | Checks if the API is already registered. |
 | `sendPacket(World\|Player $viewer, ServerScriptDebugDrawerPacket $packet)` | Sends a custom packet to a viewer or world. |
 | `despawnPacketByID(World\|Player $viewer, int $id)` | Removes a specific shape by ID. |
-| `getIdList(string $type)` | Gets all active IDs for a shape type. |
-| `clearAll(World\|Player $viewer, string $type)` | Clears all shapes of a type for the viewer or world. |
+| `getIdList(ShapeType::enum)` | Gets all active IDs for a shape type. |
+| `clearAll(World\|Player $viewer, ShapeType::enum)` | Clears all shapes of a type for the viewer or world. (Deault `null` - clears all shapes) |
 
 ---
 
