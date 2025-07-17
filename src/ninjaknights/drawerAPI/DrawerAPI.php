@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace ninjaknights\drawerAPI;
 
 use ninjaknights\drawerAPI\ShapeType;
+use ninjaknights\drawerAPI\ShapeColor;
 use pocketmine\color\Color;
-use pocketmine\player\Player;
-use pocketmine\world\World;
-use pocketmine\plugin\PluginBase;
 use pocketmine\network\mcpe\NetworkBroadcastUtils;
 use pocketmine\network\mcpe\protocol\ServerScriptDebugDrawerPacket;
 use pocketmine\network\mcpe\protocol\types\PacketShapeData;
+use pocketmine\player\Player;
+use pocketmine\plugin\PluginBase;
+use pocketmine\world\World;
 
 class DrawerAPI {
 
 	/** @var bool */
 	protected static bool $registered = false;
 	/** @var PluginBase|null */
-	private static ?PluginBase $plugin = null;
+	private static PluginBase|null $plugin = null;
 	/** @var array<string, int> */
 	private static array $idsCount = [];
 	/** @var array<string, array<int, bool>> */
@@ -37,9 +38,7 @@ class DrawerAPI {
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
 	public static function checkRegistered(): void {
-		if(!self::$registered){
-			throw new \LogicException("DrawerAPI must be registered before use.");
-		}
+		if(!self::$registered) throw new \LogicException("DrawerAPI must be registered before use.");
 	}
 
 	/**
@@ -49,9 +48,7 @@ class DrawerAPI {
 	 * @throws \LogicException if DrawerAPI is already registered.
 	 */
 	public static function register(PluginBase $plugin): void {
-		if(self::$registered){
-			throw new \LogicException("DrawerAPI is already registered");
-		}
+		if(self::$registered) throw new \LogicException("DrawerAPI is already registered");
 		foreach(ShapeType::cases() as $type){
 			self::$idsCount[$type->value] = 0;
 			self::$activeIds[$type->value] = [];
@@ -61,49 +58,38 @@ class DrawerAPI {
 	}
 
 	/**
-	 * Gets the Color object for a given color name.
-	 * If a named color is provided (e.g., "red", "blue"), it returns the matching Color object.
-	 * If a hex color is provided (e.g., "#ffffff" or "ffffff"), it parses and returns the corresponding Color.
-	 * If no color is provided or it's invalid, it defaults to white.
-	 * @param string|null $color The name or hex code of the color.
+	 * converts a string into a Color object.
+	 * Accepts:
+	 * - Named colors (e.g., "red", "blue", "green") (**case-insensitive**).
+	 * - Hex color codes in formats like `#ffffff` or `ffffff`.
+	 * - `ShapeColor` enum (e.g., `ShapeColor::RED`)
+	 * If the color is null or invalid, it defaults to white.
+	 * @param ?string $color Name / HexCode / ShapeColor of the color.
 	 * @return Color The corresponding Color object.
 	*/
 	public static function getColor(?string $color = null): Color {
 		self::checkRegistered();
-		if($color === null) return new Color(0xf0, 0xf0, 0xf0);
+		if($color === null) return ShapeColor::WHITE->toColor();
 		$color = strtolower(trim($color));
-		return match($color){
-			"white" => new Color(0xf0, 0xf0, 0xf0),
-			"orange" => new Color(0xf9, 0x80, 0x1d),
-			"magenta" => new Color(0xc7, 0x4e, 0xbd),
-			"light_blue" =>new Color(0x3a, 0xb3, 0xda),
-			"yellow" => new Color(0xfe, 0xd8, 0x3d),
-			"lime" => new Color(0x80, 0xc7, 0x1f),
-			"pink" => new Color(0xf3, 0x8b, 0xaa),
-			"gray" => new Color(0x47, 0x4f, 0x52),
-			"light_gray" => new Color(0x9d, 0x9d, 0x97),
-			"cyan" => new Color(0x16, 0x9c, 0x9c),
-			"purple" => new Color(0x89, 0x32, 0xb8),
-			"blue" => new Color(0x3c, 0x44, 0xaa),
-			"brown" => new Color(0x83, 0x54, 0x32),
-			"green" => new Color(0x5e, 0x7c, 0x16),
-			"red" => new Color(0xb0, 0x2e, 0x26),
-			"black" => new Color(0x1d, 0x1d, 0x21),
-			default => self::fromHex($color) ?? new Color(0xf0, 0xf0, 0xf0)
-		};
+		$data = ShapeColor::fromString($color);
+		if($data !== null) return $data->toColor();
+		return self::fromHex($color) ?? ShapeColor::WHITE->toColor();
 	}
 
 	/**
-	 * Parses a hex color code and returns a Color object.
-	 * @param string $hex Hex string (e.g. "#ff0000" or "ff0000").
+	 * **INTERNAL USE ONLY**
+	 * 
+	 * Parses a 6-character hexadecimal color string into a Color object.
+	 * Accepts formats like "#ff0000" or "ff0000" (case-insensitive).
+	 * Returns null if the input is not a valid 6-digit hex color.
+	 * @param string $hex Hexadecimal color string.
 	 * @return Color|null
 	 */
-	private static function fromHex(string $hex): ?Color{
+	private static function fromHex(string $hex): Color|null {
 		self::checkRegistered();
 		$hex = ltrim($hex, "#");
-		if(!preg_match('/^[0-9a-f]{6}$/i', $hex)){
-			return null;
-		}
+		if(!preg_match('/^[0-9a-f]{6}$/i', $hex)) return null;
+
 		return new Color(
 			(int) hexdec(substr($hex, 0, 2)),
 			(int) hexdec(substr($hex, 2, 2)),
@@ -142,9 +128,12 @@ class DrawerAPI {
 		self::checkRegistered();
 		$targets = $viewer instanceof Player ? [$viewer] : $viewer->getPlayers();
 		NetworkBroadcastUtils::broadcastPackets($targets, [ServerScriptDebugDrawerPacket::create([PacketShapeData::remove($id)])]);
+		return;
 	}
 
 	/**
+	 * **INTERNAL USE ONLY**
+	 * 
 	 * Generates a new ID for a specific type of shape.
 	 * The ID is incremented from the last used ID for that type.
 	 * @param ShapeType|null $type The type of shape for which to generate an ID.
@@ -155,13 +144,56 @@ class DrawerAPI {
 	public static function generateId(ShapeType|null $type = null): int {
 		self::checkRegistered();
 		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
-		if(isset(self::$activeIds[$type->value][PHP_INT_MAX])){
-			throw new \RuntimeException("ID overflow for type: $type->value");
-		}
+		if(isset(self::$activeIds[$type->value][PHP_INT_MAX])) throw new \RuntimeException("ID overflow for type: $type->value");
+
 		$id = ++self::$idsCount[$type->value];
 		self::$activeIds[$type->value][$id] = true;
 		self::$plugin?->getLogger()->debug("Generated ID {$id} for type {$type->value}");
 		return $id;
+	}
+
+	/**
+	 * Gets the current highest allocated ID for the given shape type.
+	 * This method returns the last issued ID for the specified `ShapeType`,
+	 * even if it has been removed.
+	 * @param ShapeType|null $type The type of shape to get the last ID for.
+	 * @return int The last issued ID for the shape type, or 0 if none exist.
+	 * @throws \InvalidArgumentException If no ShapeType is provided.
+	 */
+	public static function getId(ShapeType|null $type = null): int {
+		self::checkRegistered();
+		if($type === null) throw new \InvalidArgumentException("Specify a ShapeType Enum.");
+		return self::$idsCount[$type->value] ?? 0;
+	}
+
+	/**
+	 * Checks if a specific ID is currently active for the given shape type.
+	 * @param ShapeType|null $type The type of shape.
+	 * @param int $id The ID to check.
+	 * @return bool True if the ID is active, false otherwise.
+	 * @throws \InvalidArgumentException If the ShapeType is not provided.
+	 */
+	public static function isActiveId(ShapeType|null $type = null, int $id): bool {
+		self::checkRegistered();
+		if($type === null) throw new \InvalidArgumentException("Specify a ShapeType Enum.");
+		return isset(self::$activeIds[$type->value][$id]);
+	}
+
+	/**
+	 * Gets the list of active IDs for a specific type of shape.
+	 * This method returns an array of IDs that are currently active for the specified type.
+	 * @param ShapeType|null $type The type of shape for which to get the active IDs.
+	 * @return array<int> An array of active IDs for the specified type.
+	 * @throws \InvalidArgumentException  if the ShapeType is not mentioned via ShapeType Enum.
+	 * @throws \RuntimeException if there are no active IDs for the specified type.
+	 */
+	public static function getIdList(ShapeType|null $type = null): array {
+		self::checkRegistered();
+		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
+		if(!isset(self::$activeIds[$type->value])){
+			throw new \RuntimeException("No active IDs for type {$type->value}");
+		}
+		return array_keys(self::$activeIds[$type->value]);
 	}
 
 	/**
@@ -185,24 +217,7 @@ class DrawerAPI {
 		if(self::$idsCount[$type->value] < 0){
 			throw new \RuntimeException("ID count for type {$type->value} went negative");
 		}
-		self::$plugin?->getLogger()->debug("Removed ID {$id} for type {$type->value}");
-	}
-
-	/**
-	 * Gets the list of active IDs for a specific type of shape.
-	 * This method returns an array of IDs that are currently active for the specified type.
-	 * @param ShapeType|null $type The type of shape for which to get the active IDs.
-	 * @return array<int> An array of active IDs for the specified type.
-	 * @throws \InvalidArgumentException  if the ShapeType is not mentioned via ShapeType Enum.
-	 * @throws \RuntimeException if there are no active IDs for the specified type.
-	 */
-	public static function getIdList(ShapeType|null $type = null): array {
-		self::checkRegistered();
-		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
-		if(!isset(self::$activeIds[$type->value])){
-			throw new \RuntimeException("No active IDs for type {$type->value}");
-		}
-		return array_keys(self::$activeIds[$type->value]);
+		self::$plugin?->getLogger()->debug("Removed Shape ID {$id} for type {$type->value}");
 	}
 
 	/**
