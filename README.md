@@ -7,7 +7,7 @@
 
 <p align="center">
 	<a href="https://github.com/ninjaknights/DrawerAPI">
-    <img src="assets/icon.png?raw=true" alt="DrawerAPI Icon" width="150" /></a><br>
+	<img src="assets/icon.png?raw=true" alt="DrawerAPI Icon" width="150" /></a><br>
 	<b>DrawerAPI</b> is a PocketMine-MP virion designed to draw shapes and text in the world using the <code>ServerScriptDebugDrawerPacket</code>.
 	<br>
 	<a href="https://learn.microsoft.com/en-us/minecraft/creator/scriptapi/minecraft/debug-utilities/debugshape?view=minecraft-bedrock-experimental">View on Microsoft Docs</a>
@@ -20,11 +20,11 @@ Before using the API, you **must register** it in your plugin’s `onLoad()` or 
 ```php
 use ninjaknights\drawerAPI\DrawerAPI;
 class MyPlugin extends PluginBase {
-    public function onLoad(): void {
+	public function onLoad(): void {
 		if(!DrawerAPI::isRegistered()){
 			DrawerAPI::register($this);
 		}
-    }
+	}
 }
 ```
 
@@ -165,7 +165,7 @@ $pmColor = ShapeColor::WHITE->toColor(); // pocketmine\color\Color
 // or
 $color = ShapeColor::fromString("cyan");
 if ($color !== null) {
-    $pmColor = $color->toColor(); // pocketmine\color\Color
+	$pmColor = $color->toColor(); // pocketmine\color\Color
 }
 ```
 
