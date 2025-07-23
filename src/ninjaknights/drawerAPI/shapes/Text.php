@@ -21,7 +21,6 @@ class Text {
 	 * @param World|Player $viewer The world or player where the text will be displayed.
 	 * @param Vector3|null $position The position where the text will be displayed. Defaults to the viewer's position.
 	 * @param string|null $text The text to display.
-	 * @param float|null $size The size of the text. Defaults to 1.0.
 	 * @param string|null $color The color of the text. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
 	 *
 	 * @throws \LogicException if DrawerAPI is not registered.
@@ -30,22 +29,19 @@ class Text {
 		World|Player $viewer,
 		?Vector3 $position = null,
 		?string $text = null,
-		?float $size = null,
 		?string $color = null
 	): ?int {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Text::create before DrawerAPI is registered");
 		}
 		$pos = ($position === null) ? ($viewer instanceof Player ? $viewer->getPosition() : null) : $position;
-		// https://learn.microsoft.com/en-us/minecraft/creator/scriptapi/minecraft/debug-utilities/debugshape?view=minecraft-bedrock-experimental#totaltimeleft
-		// apparently totalTimeLeft is a real only method
 		$id = DrawerAPI::generateId(ShapeType::TEXT);
 		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
 				type: ScriptDebugShapeType::TEXT,
 				location: $pos,
-				scale: $size ?? 1.0,
+				scale: null,
 				rotation: null,
 				totalTimeLeft: null,
 				color: DrawerAPI::getColor($color),

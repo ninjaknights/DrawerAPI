@@ -47,7 +47,7 @@ class Box {
 				totalTimeLeft: null,
 				color: DrawerAPI::getColor($color),
 				text: null,
-				boxBound: $boxBound,
+				boxBound: $boxBound ?? new Vector3(1, 1, 1),
 				lineEndLocation: null,
 				arrowHeadLength: null,
 				arrowHeadRadius: null,

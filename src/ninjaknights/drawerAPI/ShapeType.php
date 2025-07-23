@@ -10,5 +10,5 @@ enum ShapeType: string {
 	case CIRCLE = "circle";
 	case LINE = "line";
 	case SPHERE = "sphere";
-    case TEXT = "text";
+	case TEXT = "text";
 }

@@ -22,7 +22,7 @@ class Circle {
 	 * @param Vector3|null $position The position where the circle will be displayed. Defaults to the viewer's position.
 	 * @param float|null $size The size of the circle. Defaults to 1.0.
 	 * @param string|null $color The color of the circle. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
-	 * @param int|null $segments The number of segments for the circle. Defaults to >50 (not sure).
+	 * @param int|null $segments The number of segments for the circle. Defaults to 20 (not sure).
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
@@ -52,7 +52,7 @@ class Circle {
 				lineEndLocation: null,
 				arrowHeadLength: null,
 				arrowHeadRadius: null,
-				segments: $segments ?? 50
+				segments: $segments ?? 20
 			)])
 		);
 		return $id;

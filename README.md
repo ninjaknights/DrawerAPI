@@ -41,7 +41,6 @@ Text::create(
 	$world, // Player/World Players to show the text to
 	"Hello, World!", // The text to display
 	new Vector3(0, 100, 0), // Position in the world or set to null to use player's position
-	1.0, // Scale of the text
 	ShapeColor::WHITE, // Color name "red" or #f0f0f0, f0f0f0 or ShapeColor enum works too
 );
 ```
@@ -55,7 +54,7 @@ Circle::create(
 	new Vector3(0, 100, 0), // Position in the world or set to null to use player's position
 	1.0, // Scale of the text
 	"#ff0000", // Color name or #f0f0f0, f0f0f0 or ShapeColor enum works too
-	3 // 3 means it will have 3 sides so a triangle, default is >50 (not sure)
+	3 // 3 means it will have 3 sides so a triangle, default is 20 (not sure)
 );
 ```
 

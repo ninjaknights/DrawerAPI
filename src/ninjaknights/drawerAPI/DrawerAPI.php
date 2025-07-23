@@ -89,7 +89,6 @@ class DrawerAPI {
 		self::checkRegistered();
 		$hex = ltrim($hex, "#");
 		if(!preg_match('/^[0-9a-f]{6}$/i', $hex)) return null;
-
 		return new Color(
 			(int) hexdec(substr($hex, 0, 2)),
 			(int) hexdec(substr($hex, 2, 2)),
@@ -145,7 +144,6 @@ class DrawerAPI {
 		self::checkRegistered();
 		if(is_null($type)) throw new \InvalidArgumentException ("Specify a ShapeType Enum");
 		if(isset(self::$activeIds[$type->value][PHP_INT_MAX])) throw new \RuntimeException("ID overflow for type: $type->value");
-
 		$id = ++self::$idsCount[$type->value];
 		self::$activeIds[$type->value][$id] = true;
 		self::$plugin?->getLogger()->debug("Generated ID {$id} for type {$type->value}");

@@ -20,11 +20,11 @@ class Arrow {
 	 * 
 	 * @param World|Player $viewer The world or player where the arrow will be displayed.
 	 * @param Vector3|null $position The position where the arrow will start. Defaults to the viewer's position.
-	 * @param Vector3|null $endLinePosition The position where the arrow will end. Defaults to null.
 	 * @param float|null $size The size of the arrow. Defaults to 1.0.
+	 * @param string|null $color The color of the arrow. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
+	 * @param Vector3|null $endLinePosition The position where the arrow will end. Defaults to null.
 	 * @param float|null $arrowHeadLength The length of the arrow head. Defaults to 0.5.
 	 * @param float|null $arrowHeadRadius The radius of the arrow head. Defaults to 0.1.
-	 * @param string|null $color The color of the arrow. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
 	 * @param int|null $segments The number of segments for the arrow. Defaults to 4.
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
@@ -32,11 +32,11 @@ class Arrow {
 	public static function create(
 		World|Player $viewer,
 		Vector3|null $position = null,
-		Vector3|null $endLinePosition = null,
 		float|null $size = null,
+		string|null $color = null,
+		Vector3|null $endLinePosition = null,
 		float|null $arrowHeadLength = null,
 		float|null $arrowHeadRadius = null,
-		string|null $color = null,
 		int|null $segments = null
 	): ?int {
 		if(!DrawerAPI::isRegistered()) {
@@ -55,9 +55,9 @@ class Arrow {
 				color: DrawerAPI::getColor($color),
 				text: null,
 				boxBound: null,
-				lineEndLocation: $endLinePosition,
-				arrowHeadLength: $arrowHeadLength,
-				arrowHeadRadius: $arrowHeadRadius,
+				lineEndLocation: $endLinePosition ?? new Vector3(0, 0, 0),
+				arrowHeadLength: $arrowHeadLength ?? 1,
+				arrowHeadRadius: $arrowHeadRadius ?? 0.5,
 				segments: $segments ?? 4
 			)])
 		);

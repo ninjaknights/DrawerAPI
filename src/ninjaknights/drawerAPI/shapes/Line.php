@@ -21,7 +21,6 @@ class Line {
 	 * @param World|Player $viewer The world or player where the line will be displayed.
 	 * @param Vector3|null $position The position where the line will start. Defaults to the viewer's position.
 	 * @param Vector3|null $endLinePosition The position where the line will end. Defaults to null.
-	 * @param float|null $size The size of the line. Defaults to 1.0.
 	 * @param string|null $color The color of the line. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
 	 * 
 	 * @throws \LogicException if DrawerAPI is not registered.
@@ -30,7 +29,6 @@ class Line {
 		World|Player $viewer,
 		Vector3|null $position = null,
 		Vector3|null $endLinePosition = null,
-		float|null $size = null,
 		string|null $color = null
 	): ?int {
 		if(!DrawerAPI::isRegistered()) {
@@ -43,13 +41,13 @@ class Line {
 				networkId: $id,
 				type: ScriptDebugShapeType::LINE,
 				location: $pos,
-				scale: $size ?? 1.0,
+				scale: 1.0,
 				rotation: null,
 				totalTimeLeft: null,
 				color: DrawerAPI::getColor($color),
 				text: null,
 				boxBound: null,
-				lineEndLocation: $endLinePosition,
+				lineEndLocation: $endLinePosition ?? new Vector3(0, 0, 0),
 				arrowHeadLength: null,
 				arrowHeadRadius: null,
 				segments: null
