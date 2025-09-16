@@ -11,6 +11,8 @@
 	<b>DrawerAPI</b> is a PocketMine-MP virion designed to draw shapes and text in the world using the <code>ServerScriptDebugDrawerPacket</code>.
 	<br>
 	<a href="https://learn.microsoft.com/en-us/minecraft/creator/scriptapi/minecraft/debug-utilities/debugshape?view=minecraft-bedrock-experimental">View on Microsoft Docs</a>
+	<br>
+	<a href="https://packagist.org/packages/ninjaknights/drawerapi">View on Packagist</a>
 </p>
 
 ---
