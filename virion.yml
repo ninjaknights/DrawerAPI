@@ -1,6 +1,6 @@
 name: DrawerAPI
-version: 0.0.6
+version: 0.0.7
 api: 5.0.0
 antigen: ninjaknights\drawerAPI
 author: HydroGamesDev
-description: PocketMine-MP virion that provides a simple API for drawing shapes and text in the world using the ServerScriptDebugDrawerPacket.
+description: PocketMine-MP virion that provides a simple API for drawing shapes and text in the world using the DebugDrawerPacket.

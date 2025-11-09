@@ -11,6 +11,7 @@ use pocketmine\world\World;
 use pocketmine\utils\TextFormat as TF;
 use ninjaknights\drawerAPI\DrawerAPI;
 use ninjaknights\drawerAPI\Shapes\Text;
+use ninjaknights\drawerAPI\ShapeType;
 use pocketmine\event\block\BlockBreakEvent;
 
 class Main extends PluginBase implements Listener{
@@ -45,7 +46,6 @@ class Main extends PluginBase implements Listener{
 			$player->getWorld(),
 			$block->getPosition()->add(0, 2, 0),
 			"§q§l+1 §r§7{$blockName}",
-			2.5,
 			"white"
 		);
 		$this->getScheduler()->scheduleDelayedTask(new class($world) extends \pocketmine\scheduler\Task {
@@ -54,7 +54,7 @@ class Main extends PluginBase implements Listener{
 					$this->world = $world;
 				}
 				public function onRun(): void {
-					DrawerAPI::clearAll($this->world, "text");
+					DrawerAPI::clearAll($this->world, ShapeType::TEXT);
 				}
 		}, 3 * 20);
 		$player->getInventory()->addItem($event->getItem());
@@ -72,7 +72,6 @@ class Main extends PluginBase implements Listener{
 				$world,
 				position: $player->getPosition()->add(0, 2.5, 0),
 				text: TF::colorize($message),
-				size: 1.10,
 				color: "white" 
 			);
 			$this->getScheduler()->scheduleDelayedTask(new class($world) extends \pocketmine\scheduler\Task {
@@ -81,7 +80,7 @@ class Main extends PluginBase implements Listener{
 					$this->world = $world;
 				}
 				public function onRun(): void {
-					DrawerAPI::clearAll($this->world, "text");
+					DrawerAPI::clearAll($this->world, ShapeType::TEXT);
 				}
 			}, 5 * 20);
 		}

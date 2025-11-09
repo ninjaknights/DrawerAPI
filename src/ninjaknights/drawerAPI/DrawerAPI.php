@@ -1,25 +1,23 @@
 <?php
-
 declare(strict_types=1);
-
 namespace ninjaknights\drawerAPI;
 
 use ninjaknights\drawerAPI\ShapeType;
 use ninjaknights\drawerAPI\ShapeColor;
 use pocketmine\color\Color;
 use pocketmine\network\mcpe\NetworkBroadcastUtils;
-use pocketmine\network\mcpe\protocol\ServerScriptDebugDrawerPacket;
+use pocketmine\network\mcpe\protocol\DebugDrawerPacket;
 use pocketmine\network\mcpe\protocol\types\PacketShapeData;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\World;
 
-class DrawerAPI {
+final class DrawerAPI {
 
 	/** @var bool */
 	protected static bool $registered = false;
 	/** @var PluginBase|null */
-	private static PluginBase|null $plugin = null;
+	public static PluginBase|null $plugin = null;
 	/** @var array<string, int> */
 	private static array $idsCount = [];
 	/** @var array<string, array<int, bool>> */
@@ -42,6 +40,15 @@ class DrawerAPI {
 	}
 
 	/**
+	 * Gets the registered plugin instance.
+	 * @return PluginBase|null The registered plugin instance, or null if not registered.
+	 */
+	public static function getPlugin(): PluginBase|null {
+		self::checkRegistered();
+		return self::$plugin;
+	}
+
+	/**
 	 * Registers the DrawerAPI with the given plugin.
 	 * This method should be called once during plugin initialization.
 	 * @param PluginBase $plugin The plugin instance to register with.
@@ -55,6 +62,14 @@ class DrawerAPI {
 		}
 		self::$plugin = $plugin;
 		self::$registered = true;
+	}
+
+	/**
+	 * Unregisters the DrawerAPI.
+	 */
+	public static function unregister(): void {
+		self::$plugin = null;
+		self::$registered = false;
 	}
 
 	/**
@@ -97,15 +112,15 @@ class DrawerAPI {
 	}
 
 	/**
-	 * Sends a ServerScriptDebugDrawerPacket to the specified viewer or world.
+	 * Sends a DebugDrawerPacket to the specified viewer or world.
 	 * If the viewer is a Player, it sends the packet to that player.
 	 * If the viewer is a World, it broadcasts the packet to all players in that world.
 	 * @param World|Player $viewer The viewer or world to send the packet to.
-	 * @param ServerScriptDebugDrawerPacket $packet The packet to send.
+	 * @param DebugDrawerPacket $packet The packet to send.
 	 */
 	public static function sendPacket(
 		World|Player $viewer,
-		ServerScriptDebugDrawerPacket $packet
+		DebugDrawerPacket $packet
 	): void {
 		self::checkRegistered();
 		$targets = $viewer instanceof Player ? [$viewer] : $viewer->getPlayers();
@@ -126,7 +141,7 @@ class DrawerAPI {
 	): void {
 		self::checkRegistered();
 		$targets = $viewer instanceof Player ? [$viewer] : $viewer->getPlayers();
-		NetworkBroadcastUtils::broadcastPackets($targets, [ServerScriptDebugDrawerPacket::create([PacketShapeData::remove($id)])]);
+		NetworkBroadcastUtils::broadcastPackets($targets, [DebugDrawerPacket::create([PacketShapeData::remove($id)])]);
 		return;
 	}
 

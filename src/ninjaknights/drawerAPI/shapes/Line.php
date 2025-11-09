@@ -9,7 +9,7 @@ use ninjaknights\drawerAPI\ShapeType;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\world\World;
-use pocketmine\network\mcpe\protocol\ServerScriptDebugDrawerPacket;
+use pocketmine\network\mcpe\protocol\DebugDrawerPacket;
 use pocketmine\network\mcpe\protocol\types\PacketShapeData;
 use pocketmine\network\mcpe\protocol\types\ScriptDebugShapeType;
 
@@ -36,7 +36,7 @@ class Line {
 		}
 		$pos = ($position === null) ? ($viewer instanceof Player ? $viewer->getPosition() : null) : $position;
 		$id = DrawerAPI::generateId(ShapeType::LINE);
-		DrawerAPI::sendPacket($viewer, ServerScriptDebugDrawerPacket::create([
+		DrawerAPI::sendPacket($viewer, DebugDrawerPacket::create([
 			new PacketShapeData(
 				networkId: $id,
 				type: ScriptDebugShapeType::LINE,

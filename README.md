@@ -8,7 +8,7 @@
 <p align="center">
 	<a href="https://github.com/ninjaknights/DrawerAPI">
 	<img src="assets/icon.png?raw=true" alt="DrawerAPI Icon" width="150" /></a><br>
-	<b>DrawerAPI</b> is a PocketMine-MP virion designed to draw shapes and text in the world using the <code>ServerScriptDebugDrawerPacket</code>.
+	<b>DrawerAPI</b> is a PocketMine-MP virion designed to draw shapes and text in the world using the <code>DebugDrawerPacket</code>.
 	<br>
 	<a href="https://learn.microsoft.com/en-us/minecraft/creator/scriptapi/minecraft/debug-utilities/debugshape?view=minecraft-bedrock-experimental">View on Microsoft Docs</a>
 	<br>
@@ -151,7 +151,7 @@ $lastId = DrawerAPI::getId(ShapeType::BOX);
 | `removeId(ShapeType $type, int $id): void` | Manually unregisters an ID (usually done automatically). |
 | `clearAll(World\|Player $viewer, ?ShapeType $type): void` | Despawns and removes all shapes of a specific type or all types. |
 | `despawnPacketByID(World\|Player $viewer, int $id): void` | Removes a single shape from view by its ID. |
-| `sendPacket(World\|Player $viewer, ServerScriptDebugDrawerPacket $packet): void` | Sends a custom packet to a player or world. |
+| `sendPacket(World\|Player $viewer, DebugDrawerPacket $packet): void` | Sends a custom packet to a player or world. |
 
 ### ➤ ShapeColor Methods
 | Method | Description |
