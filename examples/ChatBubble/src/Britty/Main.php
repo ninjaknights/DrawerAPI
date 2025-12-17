@@ -1,7 +1,5 @@
 <?php
-
 declare(strict_types=1);
-
 namespace Britty;
 
 use pocketmine\plugin\PluginBase;
@@ -46,7 +44,8 @@ class Main extends PluginBase implements Listener{
 			$player->getWorld(),
 			$block->getPosition()->add(0, 2, 0),
 			"§q§l+1 §r§7{$blockName}",
-			"white"
+			"white",
+			0.50
 		);
 		$this->getScheduler()->scheduleDelayedTask(new class($world) extends \pocketmine\scheduler\Task {
 				private World $world;
@@ -72,7 +71,7 @@ class Main extends PluginBase implements Listener{
 				$world,
 				position: $player->getPosition()->add(0, 2.5, 0),
 				text: TF::colorize($message),
-				color: "white" 
+				color: "white"
 			);
 			$this->getScheduler()->scheduleDelayedTask(new class($world) extends \pocketmine\scheduler\Task {
 				private World $world;

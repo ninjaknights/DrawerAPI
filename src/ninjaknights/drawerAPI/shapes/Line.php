@@ -1,7 +1,5 @@
 <?php
-
 declare(strict_types=1);
-
 namespace ninjaknights\drawerAPI\shapes;
 
 use ninjaknights\drawerAPI\DrawerAPI;
@@ -16,20 +14,21 @@ use pocketmine\network\mcpe\protocol\types\ScriptDebugShapeType;
 class Line {
 
 	/**
-	 * Creates a line shape in the world or for a player.
+	 * Creates a Line shape in the world or for a player.
 	 * 
-	 * @param World|Player $viewer The world or player where the line will be displayed.
-	 * @param Vector3|null $position The position where the line will start. Defaults to the viewer's position.
-	 * @param Vector3|null $endLinePosition The position where the line will end. Defaults to null.
-	 * @param string|null $color The color of the line. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
-	 * 
+	 * @param World|Player $viewer The world or player that will see the Line Shape.
+	 * @param Vector3|null $position The position where the Line will start. Defaults to the viewer's position.
+	 * @param Vector3|null $endLinePosition The position where the Line will end. Defaults to `null`.
+	 * @param string|null $color The color of the Line. Defaults to "white". (Accepts HexCode eg: `#f0f0f0`)
+	 * @param float|null $lifeSpan The total initial time-span (in seconds) until this shape is automatically removed. Defaults to `null`.
 	 * @throws \LogicException if DrawerAPI is not registered.
 	*/
 	public static function create(
 		World|Player $viewer,
 		Vector3|null $position = null,
 		Vector3|null $endLinePosition = null,
-		string|null $color = null
+		string|null $color = null,
+		?float $lifeSpan = null
 	): ?int {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Line::create before calling register");
@@ -43,7 +42,7 @@ class Line {
 				location: $pos,
 				scale: 1.0,
 				rotation: null,
-				totalTimeLeft: null,
+				totalTimeLeft: $lifeSpan,
 				color: DrawerAPI::getColor($color),
 				text: null,
 				boxBound: null,
@@ -57,10 +56,10 @@ class Line {
 	}
 
 	/**
-	 * Removes a specific line shape by its ID.
+	 * Removes a specific Line shape by its ID.
 	 *
-	 * @param World|Player $viewer The world or player from which to remove the line shape.
-	 * @param int $id The ID of the line shape to remove.
+	 * @param World|Player $viewer The world or player from which to remove the Line shape.
+	 * @param int $id The ID of the Line shape to remove.
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
 	public static function removeById(World|Player $viewer, int $id): void {

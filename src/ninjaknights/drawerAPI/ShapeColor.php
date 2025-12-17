@@ -1,14 +1,11 @@
 <?php
-
 declare(strict_types=1);
-
 namespace ninjaknights\drawerAPI;
 
 use pocketmine\color\Color;
 use ninjaknights\drawerAPI\DrawerAPI;
 
 enum ShapeColor: string {
-
 	case WHITE = 'white';
 	case ORANGE = 'orange';
 	case MAGENTA = 'magenta';

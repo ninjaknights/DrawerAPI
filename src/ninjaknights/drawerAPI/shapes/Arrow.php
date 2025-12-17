@@ -1,7 +1,5 @@
 <?php
-
 declare(strict_types=1);
-
 namespace ninjaknights\drawerAPI\shapes;
 
 use ninjaknights\drawerAPI\DrawerAPI;
@@ -16,17 +14,17 @@ use pocketmine\network\mcpe\protocol\types\ScriptDebugShapeType;
 class Arrow {
 
 	/**
-	 * Creates an arrow shape in the world or for a player.
+	 * Creates an Arrow shape in the world or for a player.
 	 * 
-	 * @param World|Player $viewer The world or player where the arrow will be displayed.
-	 * @param Vector3|null $position The position where the arrow will start. Defaults to the viewer's position.
-	 * @param float|null $size The size of the arrow. Defaults to 1.0.
-	 * @param string|null $color The color of the arrow. Defaults to "white". (Accepts HexCode eg: #f0f0f0)
-	 * @param Vector3|null $endLinePosition The position where the arrow will end. Defaults to null.
-	 * @param float|null $arrowHeadLength The length of the arrow head. Defaults to 0.5.
-	 * @param float|null $arrowHeadRadius The radius of the arrow head. Defaults to 0.1.
-	 * @param int|null $segments The number of segments for the arrow. Defaults to 4.
-	 * 
+	 * @param World|Player $viewer The world or player that will see the Arrow Shape.
+	 * @param Vector3|null $position The position where the Arrow will start. Defaults to the viewer's position.
+	 * @param float|null $size The size of the Arrow. Defaults to `1.0`.
+	 * @param string|null $color The color of the Arrow. Defaults to "white". (Accepts HexCode eg: `#f0f0f0`)
+	 * @param Vector3|null $endLinePosition The position where the Arrow will end. Defaults to `null`.
+	 * @param float|null $arrowHeadLength The length of the Arrow head. Defaults to `0.5`.
+	 * @param float|null $arrowHeadRadius The radius of the Arrow head. Defaults to `0.1`.
+	 * @param int|null $segments The number of segments for the Arrow. Defaults to `4`.
+	 * @param float|null $lifeSpan The total initial time-span (in seconds) until this shape is automatically removed. Defaults to `null`.
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
 	public static function create(
@@ -37,7 +35,8 @@ class Arrow {
 		Vector3|null $endLinePosition = null,
 		float|null $arrowHeadLength = null,
 		float|null $arrowHeadRadius = null,
-		int|null $segments = null
+		int|null $segments = null,
+		?float $lifeSpan = null
 	): ?int {
 		if(!DrawerAPI::isRegistered()) {
 			throw new \LogicException("Cannot call Arrow::create before calling register");
@@ -51,7 +50,7 @@ class Arrow {
 				location: $pos,
 				scale: $size ?? 1.0,
 				rotation: null,
-				totalTimeLeft: null,
+				totalTimeLeft: $lifeSpan,
 				color: DrawerAPI::getColor($color),
 				text: null,
 				boxBound: null,
@@ -65,10 +64,10 @@ class Arrow {
 	}
 
 	/**
-	 * Removes a specific arrow shape by its ID.
+	 * Removes a specific Arrow shape by its ID.
 	 *
-	 * @param World|Player $viewer The world or player from which to remove the arrow shape.
-	 * @param int $id The ID of the arrow shape to remove.
+	 * @param World|Player $viewer The world or player from which to remove the Arrow shape.
+	 * @param int $id The ID of the Arrow shape to remove.
 	 * @throws \LogicException if DrawerAPI is not registered.
 	 */
 	public static function removeById(World|Player $viewer, int $id): void {

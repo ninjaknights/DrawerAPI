@@ -1,5 +1,4 @@
 <?php
-
 namespace Britty;
 
 use Britty\Main;
@@ -9,20 +8,9 @@ use pocketmine\player\Player;
 
 class FloatingTextCommand extends Command {
 
-	private $plugin;
-
-	public function __construct(Main $plugin) {
+	public function __construct() {
 		parent::__construct("floatingtext", "manage floating text settings", "/floatingtext", ["ft"]);
 		$this->setPermission("ft.command.admin");
-		$this->plugin = $plugin;
-	}
-	
-	public function getPlugin(): Main{
-		return $this->plugin;
-	}
-	
-	public function getServer(){
-		return $this->plugin->getServer();
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args): bool{
@@ -30,11 +18,11 @@ class FloatingTextCommand extends Command {
 			$sender->sendMessage(Main::PREFIX."This command can only be used in-game.");
 			return true;
 		}
-		$textManager = $this->plugin->getTextManager();
+		$textManager = Main::getInstance()->getTextManager();
 		switch($args[0] ?? '') {
 			case "create":
-				$sender->sendForm(new class($this->plugin, $sender) implements \pocketmine\form\Form {
-					public function __construct(private Main $plugin, private Player $player) {}
+				$sender->sendForm(new class($sender) implements \pocketmine\form\Form {
+					public function __construct(private Player $player) {}
 					public function jsonSerialize(): array {
 						return [
 							"type" => "custom_form",
@@ -53,15 +41,15 @@ class FloatingTextCommand extends Command {
 					}
 					public function handleResponse(Player $player, $data): void {
 						if ($data === null || empty($data[0])) return;
-						$this->plugin->getTextManager()->createFloatingText($player, (string) $data[0], (string) $data[1] ?? "white");
+						Main::getInstance()->getTextManager()->createFloatingText($player, (string) $data[0], (string) $data[1] ?? "white");
 					}
 				});
 				break;
 			case "remove":
-				$sender->sendForm(new class($this->plugin, $sender) implements \pocketmine\form\Form {
-					public function __construct(private Main $plugin, private Player $player) {}
+				$sender->sendForm(new class($sender) implements \pocketmine\form\Form {
+					public function __construct(private Player $player) {}
 					public function jsonSerialize(): array {
-						$texts = $this->plugin->getTextManager()->getAllFloatingTexts();
+						$texts = Main::getInstance()->getTextManager()->getAllFloatingTexts();
 						$options = array_map(fn($f) => basename($f, ".json"), $texts);
 						return [
 							"type" => "custom_form",
@@ -76,15 +64,15 @@ class FloatingTextCommand extends Command {
 					public function handleResponse(Player $player, $data): void {
 						if ($data === null) return;
 						$id = $data[0] + 1;
-						$this->plugin->getTextManager()->removeFloatingText($player, $id);
+						Main::getInstance()->getTextManager()->removeFloatingText($player, $id);
 					}
 				});
 				break;
 			case "edit":
-				 $sender->sendForm(new class($this->plugin, $sender) implements \pocketmine\form\Form {
-					public function __construct(private Main $plugin, private Player $player) {}
+				 $sender->sendForm(new class($sender) implements \pocketmine\form\Form {
+					public function __construct(private Player $player) {}
 					public function jsonSerialize(): array {
-						$texts = $this->plugin->getTextManager()->getAllFloatingTexts();
+						$texts = Main::getInstance()->getTextManager()->getAllFloatingTexts();
 						$options = array_map(fn($f) => basename($f, ".json"), $texts);
 						return [
 							"type" => "custom_form",
@@ -107,7 +95,7 @@ class FloatingTextCommand extends Command {
 						if ($data === null || empty($data[1])) return;
 						$id = $data[0] + 1;
 						$newMsg = $data[1];
-						$this->plugin->getTextManager()->editFloatingText($player, $id, $newMsg);
+						Main::getInstance()->getTextManager()->editFloatingText($player, $id, $newMsg);
 					}
 				});
 				break;

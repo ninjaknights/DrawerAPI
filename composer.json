@@ -2,7 +2,7 @@
   "name": "ninjaknights/drawerapi",
   "description": "PocketMine-MP virion designed to draw shapes and text in the world using the DebugDrawerPacket.",
   "type": "library",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "GPL-3.0",
   "authors": [
     {
@@ -15,7 +15,6 @@
   "require-dev": {
 		"pocketmine/pocketmine-mp": "^5.37.0",
     "php": "^8.1",
-		"sof3/pharynx": "^0.3.8",
     "phpstan/phpstan": "^1.12"
   },
   "autoload": {

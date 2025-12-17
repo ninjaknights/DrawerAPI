@@ -2,14 +2,11 @@
 
 namespace Britty;
 
-use pocketmine\utils\Config;
+use Britty\Main;
 use pocketmine\math\Vector3;
 use pocketmine\world\World;
 use pocketmine\player\Player;
-use ninjaknights\drawerAPI\DrawerAPI;
 use ninjaknights\drawerAPI\Shapes\Text;
-use pocketmine\scheduler\ClosureTask;
-use pocketmine\Server;
 
 class FloatingTextManager {
 
@@ -19,8 +16,8 @@ class FloatingTextManager {
 	 /** @var array<int, Vector3> */
 	private array $textPositions = [];
 
-	public function __construct(Main $plugin){
-		$this->dataFolder = $plugin->getDataFolder() . "saved_texts/";
+	public function __construct(){
+		$this->dataFolder = Main::getInstance()->getDataFolder() . "saved_texts/";
 		@mkdir($this->dataFolder);
 	}
 

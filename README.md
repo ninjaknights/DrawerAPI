@@ -54,9 +54,23 @@ use ninjaknights\drawerAPI\shape\Circle;
 Circle::create(
 	$world, // Player/World Players to show the text to
 	new Vector3(0, 100, 0), // Position in the world or set to null to use player's position
-	1.0, // Scale of the text
+	1.0, // Scale of the shape
 	"#ff0000", // Color name or #f0f0f0, f0f0f0 or ShapeColor enum works too
 	3 // 3 means it will have 3 sides so a triangle, default is 20 (not sure)
+);
+```
+
+### ➤ CubeShape (Debug Cube)
+> This does not generate a ID
+```php
+use ninjaknights\drawerAPI\shape\Cube;
+// Create a cube shape
+Cube::create(
+	$world, // Player/World Players to show the text to
+	new Vector3(0, 100, 0), // Position in the world or set to null to use player's position
+	"Hi there", // text of the shape
+	"#ff0000", // Color name or #f0f0f0, f0f0f0 or ShapeColor enum works too
+	10 // lifespan meaning it will stay in the world for 10 seconds after spawning
 );
 ```
 
@@ -71,6 +85,7 @@ Circle::create(
 | `Line`    | Renders a straight line between points |
 | `Sphere`  | Renders a full sphere                  |
 | `Circle`  | Renders a circle or polygon            |
+| `Cube`  | Renders a DebugCube shape            |
 
 ## Available Colors
 You can use color **names**, **enum**, or **hex codes** (e.g. `"red"`, `"light_gray"`, `"#ff0000"`, `"f0f0f0"`).  
@@ -110,6 +125,12 @@ DrawerAPI::clearAll(ShapeType::ARROW, $player); // Clears all arrow shapes for t
 ```php
 use ninjaknights\drawerAPI\shape\Text;
 Text::removeById($world, 1); // Removes the text shape with ID 1 for the player/world players
+```
+
+### ➤ Remove CubeShape
+```php
+use ninjaknights\drawerAPI\shape\Cube;
+Text::clear($world); // Removes the cube shape for the player/world players
 ```
 
 ---
